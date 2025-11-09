@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm khuyến mãi - Pet Shop</title>
+    <link rel="stylesheet" href="../css/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/lib/bootstrap-icons.css">
+    <script src="../js/lib/jquery.js"></script>
+    <script src="../js/lib/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: #f8f7f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* === TOP BANNER === */
+        .top-banner {
+            background: #6d08b6;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === NAVBAR (giống index.html) === */
+        nav {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            background: transparent;
+            box-shadow: none !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-container {
+            background: transparent;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            gap: 40px;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .nav-link {
+            color: #4b0082;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: #0714c4;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0714c4;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 10px;
+            z-index: 1000;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            color: #2d3748;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background: #f7fafc;
+            color: #0714c4;
+            padding-left: 25px;
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f7fafc;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4b0082;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .search-icon-btn:hover {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .search-input-wrapper {
+            position: absolute;
+            right: 0;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .search-container.active .search-input-wrapper {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .search-input-wrapper input {
+            border: none;
+            outline: none;
+            padding: 10px 20px;
+            padding-right: 45px;
+            width: 280px;
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .search-input-wrapper input::placeholder {
+            color: #999;
+        }
+
+        .search-submit-btn {
+            position: absolute;
+            right: 5px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #2c7a7b;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-submit-btn:hover {
+            background: #0714c4;
+            transform: scale(1.05);
+        }
+
+        .search-close-btn {
+            position: absolute;
+            right: 45px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+
+        .search-container.active .search-close-btn {
+            opacity: 1;
+        }
+
+        .search-close-btn:hover {
+            color: #333;
+        }
+
+        .nav-icon-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            text-decoration: none;
+            color: #4b0082;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .nav-icon-link i {
+            font-size: 24px;
+            color: #4b0082;
+        }
+
+        .nav-icon-link:hover {
+            color: #0714c4;
+            transform: translateY(-2px);
+        }
+
+        .navbar-toggler {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #2d3748;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* === CONTENT === */
+        .content-wrapper {
+            margin-top: 120px;
+        }
+
+        .box_header {
+            background-color: #ffffff;
+            color: white;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .box_header h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .box_header p {
+            font-size: 1.1rem;
+            color: #fff;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4b0082;
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .product-card {
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff4e4e;
+            color: white;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+        }
+
+        #filter-select {
+            margin-top: 10px;
+            border: 2px solid #4b0082;
+            color: #4b0082;
+            font-weight: 600;
+            border-radius: 25px;
+            padding: 6px 14px;
+            cursor: pointer;
+        }
+
+        #filter-select:focus {
+            box-shadow: 0 0 5px rgba(78, 113, 255, 0.5);
+        }
+
+        /* === FOOTER (giống index.html) === */
+        .modern-footer {
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            margin-top: 60px;
+        }
+
+        .footer-features {
+            background: white;
+            padding: 40px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: #4b0082;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(44, 122, 123, 0.3);
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .footer-content {
+            padding: 50px 0 30px;
+            background: #f4f0fa;
+        }
+
+        .footer-content i {
+            color: #4b0082;
+        }
+
+        .footer-heading {
+            color: #4b0082;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-link-list li {
+            margin-bottom: 10px;
+        }
+
+        .footer-link-list a {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link-list a:hover {
+            text-decoration: underline;
+            color: #4b0082;
+        }
+
+        .footer-bottom {
+            background: #4b0082;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+            color: #cbd5e0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .social-links {
+                justify-content: flex-end;
+            }
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: #0714c4;
+            transform: translateY(-3px);
+        }
+
+        .newsletter-banner {
+            background-color: #4b0082;
+            color: #fff;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 30px;
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto 50px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .newsletter-form input {
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: none;
+            width: 250px;
+        }
+
+        .newsletter-btn {
+            background-color: #8e8eeb;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #b9b718;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 991px) {
+            .top-banner {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            nav {
+                top: 35px;
+            }
+
+            .navbar-container {
+                padding: 10px 20px;
+            }
+
+            .navbar-toggler {
+                display: block;
+            }
+
+            .nav-center {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+            }
+
+            .nav-center.active {
+                display: flex;
+            }
+
+            .nav-right-actions {
+                gap: 10px;
+            }
+
+            .nav-icon-link span {
+                display: none;
+            }
+
+            .content-wrapper {
+                margin-top: 100px;
+            }
+
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                margin-top: 5px;
+                padding-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Banner -->
+    <div class="top-banner">
+        Freeship toàn quốc đơn từ 299K - Giao 2h HCM
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-container">
+            <a href="../html/index.html" class="navbar-brand">
+                <img src="../img/LOGO_final.png" alt="Pet Shop Logo">
+            </a>
+
+            <button class="navbar-toggler" id="navToggle">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="nav-center" id="navCenter">
+                <a href="../html/index.html" class="nav-link">Trang chủ</a>
+
+                <div class="nav-item">
+                    <a href="#" class="nav-link">Danh mục <i class="bi bi-chevron-down" style="font-size: 10px"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="../html/sanphammeo.html" class="dropdown-item">Sản phẩm cho mèo</a>
+                        <a href="../html/sanphamcho.html" class="dropdown-item">Sản phẩm cho chó</a>
+                        <a href="../html/vatdung.html" class="dropdown-item">Vật dụng chó mèo</a>
+                        <a href="../html/khuyenmai.html" class="dropdown-item">Khuyến mãi</a>
+                    </div>
+                </div>
+
+                <a href="../html/blog.html" class="nav-link">Blog</a>
+                <a href="../html/lienhe.html" class="nav-link">Liên hệ</a>
+            </div>
+
+            <div class="nav-right-actions">
+                <div class="search-container" id="searchContainer">
+                    <button type="button" class="search-icon-btn" id="searchIconBtn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <div class="search-input-wrapper">
+                        <form class="d-flex" role="search" style="position: relative; width: 100%">
+                            <input type="search" placeholder="Tìm kiếm sản phẩm..." id="searchInput">
+                            <button type="button" class="search-close-btn" id="searchCloseBtn">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            <button type="submit" class="search-submit-btn">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <a href="../html/login.html" class="nav-icon-link">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Tài khoản</span>
+                </a>
+
+                <a href="../html/giohang.html" class="nav-icon-link">
+                    <i class="bi bi-bag-heart"></i>
+                    <span>Giỏ hàng</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Header khuyến mãi -->
+            <!-- Slider + Header Banner -->
+<header>
+    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <img src="../img/b1.png" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="../img/b2.png" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="../img/b3.png" class="d-block w-100" alt="Slide 3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Banner khuyến mãi (giống index) -->
+    <div class="box_header text-center p-3">
+        <p class="fw-bold fs-6 fs-md-4 fs-lg-4 mb-2">
+            <span style="color: #4b0082;">MUA NHIỀU GIẢM SÂU - giảm đến 50%! Chỉ 1 tuần duy nhất!!!</span>
+        </p>
+    </div>
+</header>
+
+            <div class="container mb-5">
+                <div class="d-flex justify-content-end mb-3">
+                    <select id="filter-select" class="form-select w-auto">
+                        <option value="">Lọc sản phẩm</option>
+                        <option value="name">Theo tên (A–Z)</option>
+                        <option value="price">Theo giá tăng dần</option>
+                    </select>
+                </div>
+                <h2 class="section-title">Sản phẩm đang khuyến mãi</h2>
+                <div class="row g-4" id="list-khuyenmai"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-features">
+            <div class="container-fluid px-4">
+                <div class="row justify-content-center g-4">
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-award-fill"></i></div>
+                        <p class="feature-text">Sản phẩm<br>chất lượng cao</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-box-seam"></i></div>
+                        <p class="feature-text">Đóng gói<br>cẩn thận</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-truck"></i></div>
+                        <p class="feature-text">Vận chuyển<br>toàn quốc</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <p class="feature-text">Đảm bảo<br>an toàn</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-headset"></i></div>
+                        <p class="feature-text">Tư vấn<br>24/7</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="trial-section">
+            <div class="newsletter-banner p-4">
+                <h3>Đăng ký nhận bản tin</h3>
+                <p>Bản tóm tắt hàng tháng về những thông tin mới và thú vị từ chúng tôi.</p>
+                <form class="d-flex justify-content-center align-items-center" style="gap: 15px; max-width: 700px; margin: 0 auto">
+                    <input type="email" class="form-control" placeholder="Email" required>
+                    <button type="submit" class="newsletter-btn">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-content">
+            <div class="container">
+                <div class="row gy-4 justify-content-between">
+                    <div class="col-md-3">
+                        <h5 class="footer-heading">CỬA HÀNG THÚ CƯNG</h5>
+                        <p><i class="bi bi-telephone-fill footer-icon"></i> 097 97 64 185</p>
+                        <p><i class="bi bi-envelope-fill footer-icon"></i> petshop@gmail.com</p>
+                        <p><i class="bi bi-geo-alt-fill footer-icon"></i> 141 Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM</p>
+                        <p><strong>MST:</strong> 8393208155-002</p>
+                    </div>
+
+                    <div class="col-md-2">
+                        <h5 class="footer-heading">VỀ CHÚNG TÔI</h5>
+                        <ul class="footer-link-list">
+                            <li><a href="../html/gioithieu.html">Giới thiệu</a></li>
+                            <li><a href="#">Sản phẩm</a></li>
+                            <li><a href="../html/sitemap.html">Sitemap</a></li>
+                            <li><a href="../html/thanhvien.html">Thành viên</a></li>
+                            <li><a href="../html/lienhe.html">Liên hệ</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h5 class="footer-heading">HỖ TRỢ KHÁCH HÀNG</h5>
+                        <ul class="footer-link-list">
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Chính sách bảo mật</a></li>
+                            <li><a href="#">Chính sách vận chuyển</a></li>
+                            <li><a href="#">Chính sách đổi trả</a></li>
+                            <li><a href="#">Chính sách thanh toán</a></li>
+                            <li><a href="#">Chính sách kiểm hàng</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h5 class="footer-heading">VỊ TRÍ CỬA HÀNG</h5>
+                        <iframe class="footer-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.509337654227!2d106.700423!3d10.772104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f47f15a7a19%3A0x11cc3d70c0159d2!2zMTQxIE5ndXnhu4VuIEjhuqV1LCBC4bq_biBOZ2jDqSwgUXXhuq1uIDE!5e0!3m2!1svi!2s!4v1700000000000" width="100%" height="180" style="border: 0; border-radius: 8px" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container-fluid px-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="mb-0">© Bản quyền thuộc về Pet Shop - Nhóm 6 | Đề Tài: Website Bán Đồ Dùng Thú Cưng Trực Tuyến</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchContainer = document.getElementById("searchContainer");
+            const searchIconBtn = document.getElementById("searchIconBtn");
+            const searchCloseBtn = document.getElementById("searchCloseBtn");
+            const searchInput = document.getElementById("searchInput");
+
+            searchIconBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                searchContainer.classList.add("active");
+                setTimeout(() => searchInput.focus(), 300);
+            });
+
+            searchCloseBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                searchContainer.classList.remove("active");
+                searchInput.value = "";
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!searchContainer.contains(e.target)) {
+                    searchContainer.classList.remove("active");
+                }
+            });
+
+            searchInput.addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+
+    <script src="../js/thongtinsanpham.js"></script>
+    <script src="../js/themgiohang.js"></script>
+    <script src="../js/khuyenmai.js"></script>
+    <script src="../js/render.js"></script>
+</body>
+</html>

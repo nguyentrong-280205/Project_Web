@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu Nhóm - Slider Ngang</title>
+  <link rel="stylesheet" href="../css/lib/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/lib/bootstrap-icons.css">
+  <script src="../js/lib/jquery.js"></script>
+  <script src="../js/lib/bootstrap.bundle.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    /* === HEADER === */
+    header {
+      background: linear-gradient(135deg, #4b0082, #6d08b6);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 4.5rem;
+      margin-bottom: 0.3rem;
+      color: #4b0082;
+      align-items: center;
+      text-align: center;
+      vertical-align: middle;
+      margin-top: 10px;
+    }
+
+    /* === NAVIGATION === */
+    header {
+      background: linear-gradient(135deg, #4b0082, #6d08b6);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    header .logo img {
+      display: block;
+    }
+    header .nav-menu ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+    header .nav-menu ul li a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    header .nav-menu ul li a:hover,
+    header .nav-menu ul li a.active {
+      color: #facc15; /* vàng nổi bật */
+    }
+
+    /* === SLIDER === */
+    .slider {
+      position: relative;
+      max-width: 900px;
+      margin: 3rem auto;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      background-color: white;
+      height: 400px;
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.8s ease-in-out;
+    }
+    .slide {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 100%;
+      padding: 2.5rem 3rem;
+      box-sizing: border-box;
+    }
+    .info {
+      flex: 1;
+      padding-right: 2rem;
+      text-align: left;
+    }
+    .info h3 {
+      color: #4b0082;
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+    .info p.role {
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.8rem;
+    }
+    .info p.bio {
+      font-size: 1rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+    .photo {
+      flex-shrink: 0;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 6px solid #4b0082;
+      box-shadow: 0 4px 12px rgba(75, 0, 130, 0.3);
+    }
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .photo:hover img {
+      transform: scale(1.08);
+    }
+
+    /* === DOTS === */
+    .dots {
+      display: flex;
+      justify-content: center;
+      margin: 1.2rem 0;
+      gap: 0.6rem;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      background-color: #cbd5e1;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dot.active {
+      background-color: #4b0082;
+      width: 30px;
+      border-radius: 8px;
+    }
+
+    /* === FOOTER === */
+    .modern-footer {
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            margin-top: 60px;
+        }
+
+    .footer-features {
+            background: white;
+            padding: 40px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+    .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: #4b0082;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            transition: all 0.3s ease;
+        }
+
+    .feature-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(44, 122, 123, 0.3);
+        }
+
+    .feature-text {
+            font-size: 14px;
+            color: #4a5568;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+    .footer-content {
+            padding: 50px 0 30px;
+            background: #f4f0fa;
+        }
+
+    .footer-content i {
+            color: #4b0082;
+        }
+
+    .footer-heading {
+            color: #4b0082;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+    .footer-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+    .footer-link-list li {
+            margin-bottom: 10px;
+        }
+
+    .footer-link-list a {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+    .footer-link-list a:hover {
+            text-decoration: underline;
+            color: #4b0082;
+        }
+
+    .footer-bottom {
+            background: #4b0082;
+            color: white;
+            padding: 20px 0;
+        }
+
+    .footer-bottom p {
+            font-size: 13px;
+            color: #cbd5e0;
+        }
+
+    .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .social-links {
+                justify-content: flex-end;
+            }
+        }
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .social-links a:hover {
+      background: #0714c4;
+      transform: translateY(-3px);
+    }
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .slide {
+        flex-direction: column;
+        text-align: center;
+        height: auto;
+      }
+      .info {
+        padding: 0;
+      }
+      .photo {
+        margin-top: 1.5rem;
+        width: 180px;
+        height: 180px;
+      }
+      header h1 {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header + Nav -->
+  <header>
+    <div class="header-container">
+      <a href="../html/index.html" class="logo">
+        <img src="../img/LOGO_final.png" alt="Logo" height="50">
+      </a>
+      <nav class="nav-menu">
+        <ul>
+          <li><a href="../html/index.html">Trang chủ</a></li>
+          <li><a href="../html/thanhvien.html" class="active">Nhóm 6</a></li>
+          <li><a href="../html/khuyenmai.html">Khuyến mãi</a></li>
+          <li><a href="../html/blog.html">Blog</a></li>
+          <li><a href="../html/gioithieu.html">Giới thiệu</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Tiêu đề lớn -->
+    <h1>Nhóm 6</h1>
+
+  <!-- Slider -->
+  <div class="slider">
+    <div class="slides">
+      <div class="slide">
+        <div class="info">
+          <h3>Mai Quốc Hưng</h3>
+          <p class="role">Trưởng nhóm</p>
+          <p class="bio">Phân chia công việc và làm báo cáo</p>
+        </div>
+        <div class="photo">
+          <img src="../img/av1.jpg" alt="Mai Quốc Hưng">
+        </div>
+      </div>
+      <div class="slide">
+        <div class="info">
+          <h3>Nguyễn Tiến Dũng</h3>
+          <p class="role">Thành viên</p>
+          <p class="bio">Thiết kế logo, phối màu sắc trang</p>
+        </div>
+        <div class="photo">
+          <img src="../img/av2.jpg" alt="Nguyễn Tiến Dũng">
+        </div>
+      </div>
+      <div class="slide">
+        <div class="info">
+          <h3>Vũ Gia Thịnh</h3>
+          <p class="role">Thành viên</p>
+          <p class="bio">Tìm kiếm và nhập sản phẩm</p>
+        </div>
+        <div class="photo">
+          <img src="../img/av3.jpg" alt="Vũ Gia Thịnh">
+        </div>
+      </div>
+      <div class="slide">
+        <div class="info">
+          <h3>Nguyễn Đình Trọng</h3>
+          <p class="role">Thành viên</p>
+          <p class="bio">Làm 13 trang, chỉ đạo nhóm trưởng</p>
+        </div>
+        <div class="photo">
+          <img src="../img/av4.jpg" alt="Nguyễn Đình Trọng">
+        </div>
+      </div>
+      <div class="slide">
+        <div class="info">
+          <h3>Huỳnh Hữu Tuấn</h3>
+          <p class="role">Thành viên</p>
+          <p class="bio">Thiết kế trang</p>
+        </div>
+        <div class="photo">
+          <img src="../img/av1.jpg" alt="Huỳnh Hữu Tuấn">
+        </div>
+      </div>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <!-- Footer -->
+<footer class="modern-footer">
+        <div class="footer-features">
+            <div class="container-fluid px-4">
+                <div class="row justify-content-center g-4">
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-award-fill"></i></div>
+                        <p class="feature-text">Sản phẩm<br>chất lượng cao</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-box-seam"></i></div>
+                        <p class="feature-text">Đóng gói<br>cẩn thận</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-truck"></i></div>
+                        <p class="feature-text">Vận chuyển<br>toàn quốc</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <p class="feature-text">Đảm bảo<br>an toàn</p>
+                    </div>
+                    <div class="col-6 col-md-2 text-center">
+                        <div class="feature-icon"><i class="bi bi-headset"></i></div>
+                        <p class="feature-text">Tư vấn<br>24/7</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-content">
+            <div class="container">
+                <div class="row gy-4 justify-content-between">
+                    <div class="col-md-3">
+                        <h5 class="footer-heading">CỬA HÀNG THÚ CƯNG</h5>
+                        <p><i class="bi bi-telephone-fill footer-icon"></i> 097 97 64 185</p>
+                        <p><i class="bi bi-envelope-fill footer-icon"></i> petshop@gmail.com</p>
+                        <p><i class="bi bi-geo-alt-fill footer-icon"></i> 141 Nguyễn Huệ, Bến Nghé, Quận 1, TP HCM</p>
+                        <p><strong>MST:</strong> 8393208155-002</p>
+                    </div>
+
+                    <div class="col-md-2">
+                        <h5 class="footer-heading">VỀ CHÚNG TÔI</h5>
+                        <ul class="footer-link-list">
+                            <li><a href="../html/gioithieu.html">Giới thiệu</a></li>
+                            <li><a href="#">Sản phẩm</a></li>
+                            <li><a href="../html/sitemap.html">Sitemap</a></li>
+                            <li><a href="../html/thanhvien.html">Thành viên</a></li>
+                            <li><a href="../html/blog.html">blog</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h5 class="footer-heading">HỖ TRỢ KHÁCH HÀNG</h5>
+                        <ul class="footer-link-list">
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Chính sách bảo mật</a></li>
+                            <li><a href="#">Chính sách vận chuyển</a></li>
+                            <li><a href="#">Chính sách đổi trả</a></li>
+                            <li><a href="#">Chính sách thanh toán</a></li>
+                            <li><a href="#">Chính sách kiểm hàng</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h5 class="footer-heading">VỊ TRÍ CỬA HÀNG</h5>
+                        <iframe class="footer-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.509337654227!2d106.700423!3d10.772104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f47f15a7a19%3A0x11cc3d70c0159d2!2zMTQxIE5ndXnhu4VuIEjhuqV1LCBC4bq_biBOZ2jDqSwgUXXhuq1uIDE!5e0!3m2!1svi!2s!4v1700000000000" width="100%" height="180" style="border: 0; border-radius: 8px" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container-fluid px-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="mb-0">© Bản quyền thuộc về Pet Shop - Nhóm 6 | Đề Tài: Website Bán Đồ Dùng Thú Cưng Trực Tuyến</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+  <!-- Slider JS -->
+  <script>
+    const slides = document.querySelector('.slides');
+    const slideItems = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.dots');
+    let currentIndex = 0;
+    const totalSlides = slideItems.length;
+
+    slideItems.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (index === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+
+    function goToSlide(index) {
+      slides.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach(dot => dot.classList.remove('active'));
+      dots[index].classList.add('active');
+      currentIndex = index;
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalSlides;
+      goToSlide(currentIndex);
+    }
+
+    setInterval(nextSlide, 5000);
+  </script>
+</body>
+</html>
